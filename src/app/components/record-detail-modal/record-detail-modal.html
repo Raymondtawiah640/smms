@@ -1,0 +1,18 @@
+<div *ngIf="visible" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white rounded-2xl shadow-lg w-96 p-5 relative">
+    <button (click)="closeModal()" class="absolute top-2 right-3 text-gray-400 hover:text-red-500 text-xl">×</button>
+
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ record.full_name }}</h2>
+
+    <p><strong>Status:</strong> {{ record.status }}</p>
+    <p><strong>Storage Slot:</strong> {{ record.storage_slot }}</p>
+    <p><strong>Family Contact:</strong> {{ record.family_phone }}</p>
+    <p><strong>Amount Due:</strong> GHS {{ record.amount }}</p>
+
+    <div class="mt-4 text-center">
+      <button (click)="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

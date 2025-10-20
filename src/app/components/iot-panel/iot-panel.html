@@ -1,0 +1,24 @@
+<div class="p-4">
+  <h2 class="text-2xl font-semibold mb-3 text-gray-800">IoT Cold Storage Panel</h2>
+
+  <div *ngIf="loading" class="text-gray-500 text-center">Loading IoT data...</div>
+
+  <div *ngIf="!loading && sensors.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div *ngFor="let sensor of sensors" class="bg-white p-4 rounded-xl shadow-md border">
+      <h3 class="font-semibold text-gray-700">Sensor: {{ sensor.sensor_id }}</h3>
+      <p>Temperature: {{ sensor.temperature }} °C</p>
+      <p>Humidity: {{ sensor.humidity }} %</p>
+      <p>Status:
+        <span [ngClass]="{
+          'text-green-600 font-bold': sensor.power_status === 'ON',
+          'text-red-600 font-bold': sensor.power_status !== 'ON'
+        }">
+          {{ sensor.power_status }}
+        </span>
+      </p>
+      <p class="text-gray-500 text-xs">Recorded: {{ sensor.recorded_at }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && sensors.length === 0" class="text-gray-500">No IoT data available.</div>
+</div>

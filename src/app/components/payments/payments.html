@@ -1,0 +1,35 @@
+<div class="p-4">
+  <h2 class="text-2xl font-semibold mb-3 text-gray-800">Payments & Invoices</h2>
+
+  <div *ngIf="loading" class="text-center text-gray-500">Loading payment data...</div>
+
+  <table *ngIf="!loading && invoices.length > 0" class="min-w-full bg-white rounded-xl shadow-lg">
+    <thead class="bg-gray-100 text-gray-700 text-sm">
+      <tr>
+        <th class="px-4 py-2">Invoice ID</th>
+        <th class="px-4 py-2">Full Name</th>
+        <th class="px-4 py-2">Amount (GHS)</th>
+        <th class="px-4 py-2">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let inv of invoices" class="border-b hover:bg-gray-50 text-sm">
+        <td class="px-4 py-2">{{ inv.invoice_id }}</td>
+        <td class="px-4 py-2">{{ inv.full_name }}</td>
+        <td class="px-4 py-2">{{ inv.amount }}</td>
+        <td class="px-4 py-2">
+          <span [ngClass]="{
+            'text-green-600 font-medium': inv.paid == 1,
+            'text-red-600 font-medium': inv.paid == 0
+          }">
+            {{ inv.paid == 1 ? 'Paid' : 'Pending' }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && invoices.length === 0" class="text-gray-500">
+    No payment records found.
+  </div>
+</div>

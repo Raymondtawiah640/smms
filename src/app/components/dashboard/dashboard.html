@@ -1,0 +1,39 @@
+<div class="p-4">
+  <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">
+    Mortuary Management Dashboard
+  </h1>
+
+  <div *ngIf="loading" class="text-center text-gray-500">Loading data...</div>
+
+  <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Mortuary Records -->
+    <div class="bg-white shadow-lg rounded-xl p-4">
+      <h2 class="text-xl font-semibold mb-3 text-gray-700">Recent Mortuary Records</h2>
+      <div *ngIf="records.length === 0" class="text-gray-500">No records found.</div>
+      <ul>
+        <li *ngFor="let record of records" class="border-b py-2">
+          <span class="font-medium">{{ record.full_name }}</span>
+          <span class="text-sm text-gray-500"> — {{ record.status }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- IoT Cold Storage Status -->
+    <div class="bg-white shadow-lg rounded-xl p-4">
+      <h2 class="text-xl font-semibold mb-3 text-gray-700">Cold Storage Monitoring</h2>
+      <div *ngIf="iotData.length === 0" class="text-gray-500">No IoT data yet.</div>
+      <div *ngFor="let sensor of iotData" class="border-b py-2 text-sm">
+        <div>Sensor: <strong>{{ sensor.sensor_id }}</strong></div>
+        <div>Temp: {{ sensor.temperature }} °C | Humidity: {{ sensor.humidity }}%</div>
+        <div>Status:
+          <span [ngClass]="{
+            'text-green-600': sensor.power_status === 'ON',
+            'text-red-600': sensor.power_status !== 'ON'
+          }">
+            {{ sensor.power_status }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
