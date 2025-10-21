@@ -22,22 +22,26 @@ if (!$input || empty($input['full_name'])) {
 }
 
 try {
-    $sql = "INSERT INTO mortuary_records 
-        (full_name, national_id, date_of_death, storage_slot, family_name, family_phone, family_email, amount, status)
-        VALUES 
-        (:full_name, :national_id, :date_of_death, :storage_slot, :family_name, :family_phone, :family_email, :amount, :status)";
-    
+    $sql = "INSERT INTO mortuary_records
+        (full_name, national_id, date_of_death, storage_slot, biometric_tag_id, qr_code, status, family_name, family_phone, family_email, amount, paid, invoice_id)
+        VALUES
+        (:full_name, :national_id, :date_of_death, :storage_slot, :biometric_tag_id, :qr_code, :status, :family_name, :family_phone, :family_email, :amount, :paid, :invoice_id)";
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':full_name' => trim($input['full_name']),
         ':national_id' => $input['national_id'] ?? null,
         ':date_of_death' => $input['date_of_death'] ?? null,
         ':storage_slot' => $input['storage_slot'] ?? null,
+        ':biometric_tag_id' => $input['biometric_tag_id'] ?? null,
+        ':qr_code' => $input['qr_code'] ?? null,
+        ':status' => $input['status'] ?? 'pending',
         ':family_name' => $input['family_name'] ?? null,
         ':family_phone' => $input['family_phone'] ?? null,
         ':family_email' => $input['family_email'] ?? null,
         ':amount' => $input['amount'] ?? 0.00,
-        ':status' => $input['status'] ?? 'pending'
+        ':paid' => $input['paid'] ?? 0,
+        ':invoice_id' => $input['invoice_id'] ?? null
     ]);
 
     echo json_encode([

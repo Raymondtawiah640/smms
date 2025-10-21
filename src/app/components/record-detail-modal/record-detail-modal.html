@@ -1,18 +1,63 @@
-<div *ngIf="visible" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-  <div class="bg-white rounded-2xl shadow-lg w-96 p-5 relative">
-    <button (click)="closeModal()" class="absolute top-2 right-3 text-gray-400 hover:text-red-500 text-xl">×</button>
+<div *ngIf="visible" class="fixed inset-0 bg-gray-400 bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-2xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
+    <button (click)="onCloseModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl z-10">×</button>
 
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ record.full_name }}</h2>
+    <div class="p-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">{{ record.full_name }}</h2>
 
-    <p><strong>Status:</strong> {{ record.status }}</p>
-    <p><strong>Storage Slot:</strong> {{ record.storage_slot }}</p>
-    <p><strong>Family Contact:</strong> {{ record.family_phone }}</p>
-    <p><strong>Amount Due:</strong> GHS {{ record.amount }}</p>
+      <!-- Deceased Information -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200">Deceased Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <p><strong>Full Name:</strong> {{ record.full_name }}</p>
+          <p><strong>National ID:</strong> {{ record.national_id || 'N/A' }}</p>
+          <p><strong>Date of Death:</strong> {{ record.date_of_death || 'N/A' }}</p>
+          <p><strong>Storage Slot:</strong> {{ record.storage_slot || 'N/A' }}</p>
+        </div>
+      </div>
 
-    <div class="mt-4 text-center">
-      <button (click)="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-        Close
-      </button>
+      <!-- System Information -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200">System Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <p><strong>Biometric Tag ID:</strong> {{ record.biometric_tag_id || 'N/A' }}</p>
+          <p><strong>QR Code:</strong> {{ record.qr_code || 'N/A' }}</p>
+        </div>
+      </div>
+
+      <!-- Family Information -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200">Family Contact Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <p><strong>Family Name:</strong> {{ record.family_name || 'N/A' }}</p>
+          <p><strong>Family Phone:</strong> {{ record.family_phone || 'N/A' }}</p>
+          <p class="md:col-span-2"><strong>Family Email:</strong> {{ record.family_email || 'N/A' }}</p>
+        </div>
+      </div>
+
+      <!-- Financial Information -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-3 border-b border-gray-200">Financial Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <p><strong>Amount:</strong> GHS {{ record.amount || '0.00' }}</p>
+          <p><strong>Status:</strong> {{ record.status | titlecase }}</p>
+          <p><strong>Paid Status:</strong>
+            <span [ngClass]="{
+              'bg-green-100 text-green-800': record.paid === '1',
+              'bg-red-100 text-red-800': record.paid === '0'
+            }" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+              {{ record.paid === '1' ? 'Paid' : 'Unpaid' }}
+            </span>
+          </p>
+          <p><strong>Invoice ID:</strong> {{ record.invoice_id || 'N/A' }}</p>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center">
+        <button (click)="onCloseModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+          Close
+        </button>
+      </div>
     </div>
   </div>
 </div>

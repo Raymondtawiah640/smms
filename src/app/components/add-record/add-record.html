@@ -1,0 +1,354 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Submit Message -->
+    <div *ngIf="submitMessage" [ngClass]="{
+      'bg-green-100 border-green-400 text-green-700': submitMessage.includes('success'),
+      'bg-red-100 border-red-400 text-red-700': !submitMessage.includes('success')
+    }" class="px-4 py-3 border rounded relative">
+      {{ submitMessage }}
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Add New Mortuary Record</h2>
+
+      <form (ngSubmit)="onSubmit()" #recordForm="ngForm" class="space-y-6">
+        <!-- Deceased Information -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Deceased Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1">
+                Full Name
+                <span
+                  #fullNameAsterisk
+                  [ngClass]="{
+                    'text-red-500': fullName.invalid && (fullName.dirty || fullName.touched),
+                    'text-green-500': fullName.valid && (fullName.dirty || fullName.touched),
+                    'text-gray-400': !(fullName.dirty || fullName.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="full_name"
+                name="full_name"
+                [(ngModel)]="record.full_name"
+                required
+                #fullName="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter full name">
+            </div>
+
+            <div>
+              <label for="national_id" class="block text-sm font-medium text-gray-700 mb-1">
+                National ID
+                <span
+                  #nationalIdAsterisk
+                  [ngClass]="{
+                    'text-red-500': nationalId.invalid && (nationalId.dirty || nationalId.touched),
+                    'text-green-500': nationalId.valid && (nationalId.dirty || nationalId.touched),
+                    'text-gray-400': !(nationalId.dirty || nationalId.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="national_id"
+                name="national_id"
+                [(ngModel)]="record.national_id"
+                #nationalId="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter national ID">
+            </div>
+
+            <div>
+              <label for="date_of_death" class="block text-sm font-medium text-gray-700 mb-1">
+                Date of Death
+                <span
+                  #dateOfDeathAsterisk
+                  [ngClass]="{
+                    'text-red-500': dateOfDeath.invalid && (dateOfDeath.dirty || dateOfDeath.touched),
+                    'text-green-500': dateOfDeath.valid && (dateOfDeath.dirty || dateOfDeath.touched),
+                    'text-gray-400': !(dateOfDeath.dirty || dateOfDeath.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="date"
+                id="date_of_death"
+                name="date_of_death"
+                [(ngModel)]="record.date_of_death"
+                #dateOfDeath="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label for="storage_slot" class="block text-sm font-medium text-gray-700 mb-1">
+                Storage Slot
+                <span
+                  #storageSlotAsterisk
+                  [ngClass]="{
+                    'text-red-500': storageSlot.invalid && (storageSlot.dirty || storageSlot.touched),
+                    'text-green-500': storageSlot.valid && (storageSlot.dirty || storageSlot.touched),
+                    'text-gray-400': !(storageSlot.dirty || storageSlot.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="storage_slot"
+                name="storage_slot"
+                [(ngModel)]="record.storage_slot"
+                #storageSlot="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter storage slot number">
+            </div>
+          </div>
+        </div>
+
+        <!-- System Information -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">System Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="biometric_tag_id" class="block text-sm font-medium text-gray-700 mb-1">
+                Biometric Tag ID
+                <span
+                  #biometricTagIdAsterisk
+                  [ngClass]="{
+                    'text-red-500': biometricTagId.invalid && (biometricTagId.dirty || biometricTagId.touched),
+                    'text-green-500': biometricTagId.valid && (biometricTagId.dirty || biometricTagId.touched),
+                    'text-gray-400': !(biometricTagId.dirty || biometricTagId.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="biometric_tag_id"
+                name="biometric_tag_id"
+                [(ngModel)]="record.biometric_tag_id"
+                #biometricTagId="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter biometric tag ID">
+            </div>
+
+            <div>
+              <label for="qr_code" class="block text-sm font-medium text-gray-700 mb-1">
+                QR Code
+                <span
+                  #qrCodeAsterisk
+                  [ngClass]="{
+                    'text-red-500': qrCode.invalid && (qrCode.dirty || qrCode.touched),
+                    'text-green-500': qrCode.valid && (qrCode.dirty || qrCode.touched),
+                    'text-gray-400': !(qrCode.dirty || qrCode.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="qr_code"
+                name="qr_code"
+                [(ngModel)]="record.qr_code"
+                #qrCode="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter QR code">
+            </div>
+          </div>
+        </div>
+
+        <!-- Family Information -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Family Contact Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="family_name" class="block text-sm font-medium text-gray-700 mb-1">
+                Family Contact Name
+                <span
+                  #familyNameAsterisk
+                  [ngClass]="{
+                    'text-red-500': familyName.invalid && (familyName.dirty || familyName.touched),
+                    'text-green-500': familyName.valid && (familyName.dirty || familyName.touched),
+                    'text-gray-400': !(familyName.dirty || familyName.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="family_name"
+                name="family_name"
+                [(ngModel)]="record.family_name"
+                #familyName="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter family contact name">
+            </div>
+
+            <div>
+              <label for="family_phone" class="block text-sm font-medium text-gray-700 mb-1">
+                Family Phone
+                <span
+                  #familyPhoneAsterisk
+                  [ngClass]="{
+                    'text-red-500': familyPhone.invalid && (familyPhone.dirty || familyPhone.touched),
+                    'text-green-500': familyPhone.valid && (familyPhone.dirty || familyPhone.touched),
+                    'text-gray-400': !(familyPhone.dirty || familyPhone.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="tel"
+                id="family_phone"
+                name="family_phone"
+                [(ngModel)]="record.family_phone"
+                #familyPhone="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter phone number">
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="family_email" class="block text-sm font-medium text-gray-700 mb-1">
+                Family Email
+                <span
+                  #familyEmailAsterisk
+                  [ngClass]="{
+                    'text-red-500': familyEmail.invalid && (familyEmail.dirty || familyEmail.touched),
+                    'text-green-500': familyEmail.valid && (familyEmail.dirty || familyEmail.touched),
+                    'text-gray-400': !(familyEmail.dirty || familyEmail.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="email"
+                id="family_email"
+                name="family_email"
+                [(ngModel)]="record.family_email"
+                #familyEmail="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter email address">
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Information -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Financial Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
+                Amount ($)
+                <span
+                  #amountAsterisk
+                  [ngClass]="{
+                    'text-red-500': amount.invalid && (amount.dirty || amount.touched),
+                    'text-green-500': amount.valid && (amount.dirty || amount.touched),
+                    'text-gray-400': !(amount.dirty || amount.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="number"
+                id="amount"
+                name="amount"
+                [(ngModel)]="record.amount"
+                #amount="ngModel"
+                step="0.01"
+                min="0"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0.00">
+            </div>
+
+            <div>
+              <label for="status" class="block text-sm font-medium text-gray-700 mb-1">
+                Status
+                <span
+                  #statusAsterisk
+                  [ngClass]="{
+                    'text-red-500': status.invalid && (status.dirty || status.touched),
+                    'text-green-500': status.valid && (status.dirty || status.touched),
+                    'text-gray-400': !(status.dirty || status.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <select
+                id="status"
+                name="status"
+                [(ngModel)]="record.status"
+                #status="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="pending">Pending</option>
+                <option value="in-storage">In Storage</option>
+                <option value="released">Released</option>
+                <option value="transit">In Transit</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="paid" class="block text-sm font-medium text-gray-700 mb-1">
+                Paid Status
+                <span
+                  #paidAsterisk
+                  [ngClass]="{
+                    'text-red-500': paid.invalid && (paid.dirty || paid.touched),
+                    'text-green-500': paid.valid && (paid.dirty || paid.touched),
+                    'text-gray-400': !(paid.dirty || paid.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <select
+                id="paid"
+                name="paid"
+                [(ngModel)]="record.paid"
+                #paid="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="0">Unpaid</option>
+                <option value="1">Paid</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="invoice_id" class="block text-sm font-medium text-gray-700 mb-1">
+                Invoice ID
+                <span
+                  #invoiceIdAsterisk
+                  [ngClass]="{
+                    'text-red-500': invoiceId.invalid && (invoiceId.dirty || invoiceId.touched),
+                    'text-green-500': invoiceId.valid && (invoiceId.dirty || invoiceId.touched),
+                    'text-gray-400': !(invoiceId.dirty || invoiceId.touched)
+                  }"
+                  class="transition-colors duration-200">*</span>
+              </label>
+              <input
+                type="text"
+                id="invoice_id"
+                name="invoice_id"
+                [(ngModel)]="record.invoice_id"
+                #invoiceId="ngModel"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter invoice ID">
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-4">
+          <button
+            type="button"
+            (click)="onCancel()"
+            class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="isSubmitting || !record.full_name.trim()"
+            class="px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            [ngClass]="{
+              'bg-blue-600 hover:bg-blue-700 text-white': record.full_name.trim(),
+              'bg-gray-400 text-gray-600': !record.full_name.trim()
+            }">
+            <span *ngIf="isSubmitting">Adding Record...</span>
+            <span *ngIf="!isSubmitting && record.full_name.trim()">Add Record</span>
+            <span *ngIf="!isSubmitting && !record.full_name.trim()">Enter</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,37 +1,199 @@
-<div class="p-4">
-  <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">
-    Mortuary Management Dashboard
-  </h1>
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+  <!-- Header -->
+  <div class="mb-6 sm:mb-8">
+    <div class="text-center">
+      <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">
+         Smart Mortuary Management System
+      </h1>
+      <p class="text-sm sm:text-base text-gray-600">
+        Powered by Melakah Infotech Solutions | Comprehensive Mortuary Operations
+      </p>
+      <div class="mt-2 flex justify-center items-center gap-4 text-xs text-gray-500">
+        <span class="flex items-center gap-1">
+          <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+          Live System
+        </span>
+        <span class="flex items-center gap-1">
+          <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+          IoT Enabled
+        </span>
+        <span class="flex items-center gap-1">
+          <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+          Multi-User
+        </span>
+      </div>
+    </div>
+  </div>
 
-  <div *ngIf="loading" class="text-center text-gray-500">Loading data...</div>
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p class="text-gray-500 text-lg">Loading dashboard data...</p>
+    </div>
+  </div>
 
-  <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <!-- Mortuary Records -->
-    <div class="bg-white shadow-lg rounded-xl p-4">
-      <h2 class="text-xl font-semibold mb-3 text-gray-700">Recent Mortuary Records</h2>
-      <div *ngIf="records.length === 0" class="text-gray-500">No records found.</div>
-      <ul>
-        <li *ngFor="let record of records" class="border-b py-2">
-          <span class="font-medium">{{ record.full_name }}</span>
-          <span class="text-sm text-gray-500"> — {{ record.status }}</span>
-        </li>
-      </ul>
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading" class="max-w-7xl mx-auto">
+    <!-- SMMS Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <!-- Total Records -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-blue-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Total Records</p>
+            <p class="text-2xl sm:text-3xl font-bold text-gray-900">{{ records.length }}</p>
+            <p class="text-xs text-gray-500 mt-1">All mortuary records</p>
+          </div>
+          <div class="p-3 bg-blue-100 rounded-full">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Sensors -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-green-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Active Sensors</p>
+            <p class="text-2xl sm:text-3xl font-bold text-gray-900">{{ iotData.length }}</p>
+            <p class="text-xs text-gray-500 mt-1">Cold storage units online</p>
+          </div>
+          <div class="p-3 bg-green-100 rounded-full">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Status -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-yellow-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">Pending Status</p>
+            <p class="text-2xl sm:text-3xl font-bold text-gray-900">{{ getPendingCount() }}</p>
+            <p class="text-xs text-gray-500 mt-1">Awaiting identification</p>
+          </div>
+          <div class="p-3 bg-yellow-100 rounded-full">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- In Storage -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-purple-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-600">In Storage</p>
+            <p class="text-2xl sm:text-3xl font-bold text-gray-900">{{ getInStorageCount() }}</p>
+            <p class="text-xs text-gray-500 mt-1">Currently stored</p>
+          </div>
+          <div class="p-3 bg-purple-100 rounded-full">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- IoT Cold Storage Status -->
-    <div class="bg-white shadow-lg rounded-xl p-4">
-      <h2 class="text-xl font-semibold mb-3 text-gray-700">Cold Storage Monitoring</h2>
-      <div *ngIf="iotData.length === 0" class="text-gray-500">No IoT data yet.</div>
-      <div *ngFor="let sensor of iotData" class="border-b py-2 text-sm">
-        <div>Sensor: <strong>{{ sensor.sensor_id }}</strong></div>
-        <div>Temp: {{ sensor.temperature }} °C | Humidity: {{ sensor.humidity }}%</div>
-        <div>Status:
-          <span [ngClass]="{
-            'text-green-600': sensor.power_status === 'ON',
-            'text-red-600': sensor.power_status !== 'ON'
-          }">
-            {{ sensor.power_status }}
-          </span>
+
+    <!-- SMMS Main Content Cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      <!-- Mortuary Records -->
+      <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 sm:p-6">
+          <h2 class="text-lg sm:text-xl font-semibold text-white flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            Recent Mortuary Records
+          </h2>
+          <p class="text-blue-100 text-sm mt-1">Latest mortuary records and status updates</p>
+        </div>
+        <div class="p-4 sm:p-6">
+          <div *ngIf="records.length === 0" class="text-center py-8">
+            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <p class="text-gray-500">No records found</p>
+            <p class="text-sm text-gray-400 mt-1">Add your first mortuary record to get started</p>
+          </div>
+          <div class="space-y-3">
+            <div *ngFor="let record of records.slice(0, 5)"
+                 class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+              <div class="flex-1">
+                <p class="font-medium text-gray-900">{{ record.full_name }}</p>
+                <p class="text-sm text-gray-500">{{ record.storage_slot || 'No slot assigned' }}</p>
+              </div>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-2"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': record.status === 'in-storage',
+                      'bg-yellow-100 text-yellow-800': record.status === 'pending',
+                      'bg-blue-100 text-blue-800': record.status === 'transit',
+                      'bg-gray-100 text-gray-800': record.status === 'released'
+                    }">
+                {{ record.status | titlecase }}
+              </span>
+            </div>
+          </div>
+          <div *ngIf="records.length > 5" class="text-center mt-4">
+            <a routerLink="/records" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              View all {{ records.length }} records →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- IoT Cold Storage Status -->
+      <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 sm:p-6">
+          <h2 class="text-lg sm:text-xl font-semibold text-white flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+            IoT Cold Storage Monitoring
+          </h2>
+          <p class="text-green-100 text-sm mt-1">Real-time temperature and humidity monitoring</p>
+        </div>
+        <div class="p-4 sm:p-6">
+          <div *ngIf="iotData.length === 0" class="text-center py-8">
+            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+            <p class="text-gray-500">No IoT sensors connected</p>
+            <p class="text-sm text-gray-400 mt-1">Cold storage sensors will appear here</p>
+          </div>
+          <div class="space-y-4">
+            <div *ngFor="let sensor of iotData"
+                 class="p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors duration-200">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-medium text-gray-900">Sensor {{ sensor.sensor_id }}</h3>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                      [ngClass]="{
+                        'bg-green-100 text-green-800': sensor.power_status === 'ON',
+                        'bg-red-100 text-red-800': sensor.power_status !== 'ON'
+                      }">
+                  {{ sensor.power_status }}
+                </span>
+              </div>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span class="text-gray-500">Temperature:</span>
+                  <span class="font-medium ml-1">{{ sensor.temperature }}°C</span>
+                </div>
+                <div>
+                  <span class="text-gray-500">Humidity:</span>
+                  <span class="font-medium ml-1">{{ sensor.humidity }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,24 +1,96 @@
 <div class="p-4">
-  <h2 class="text-2xl font-semibold mb-3 text-gray-800">IoT Cold Storage Panel</h2>
+  <div class="mb-4">
+    <h2 class="text-2xl font-semibold text-gray-800">IoT Cold Storage Monitoring</h2>
+    <p class="text-gray-600 text-sm mt-1">Real-time temperature and humidity monitoring for mortuary cold storage</p>
+  </div>
 
-  <div *ngIf="loading" class="text-gray-500 text-center">Loading IoT data...</div>
+  <div class="mb-4 flex gap-2">
+    <button
+      (click)="fetchIoT()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+      Refresh Status
+    </button>
+    <button
+      (click)="printAllRecords()"
+      class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+      Print Report
+    </button>
+  </div>
 
-  <div *ngIf="!loading && sensors.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div *ngFor="let sensor of sensors" class="bg-white p-4 rounded-xl shadow-md border">
-      <h3 class="font-semibold text-gray-700">Sensor: {{ sensor.sensor_id }}</h3>
-      <p>Temperature: {{ sensor.temperature }} °C</p>
-      <p>Humidity: {{ sensor.humidity }} %</p>
-      <p>Status:
-        <span [ngClass]="{
-          'text-green-600 font-bold': sensor.power_status === 'ON',
-          'text-red-600 font-bold': sensor.power_status !== 'ON'
-        }">
-          {{ sensor.power_status }}
+  <div class="mb-4 text-sm text-gray-500">
+    Last updated: {{ lastUpdate | date:'medium' }}
+  </div>
+
+  <div *ngIf="loading" class="text-gray-500 text-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+    Loading IoT data...
+  </div>
+
+  <div *ngIf="!loading && sensors.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let sensor of sensors" class="bg-white p-4 rounded-xl shadow-md border"
+         [ngClass]="{
+           'border-green-200 bg-green-50': getSensorStatus(sensor) === 'active',
+           'border-red-200 bg-red-50': getSensorStatus(sensor) === 'inactive',
+           'border-yellow-200 bg-yellow-50': getSensorStatus(sensor) === 'warning'
+         }">
+      <div class="flex justify-between items-start mb-3">
+        <h3 class="font-semibold text-gray-700">Storage Slot {{ sensor.sensor_id }}</h3>
+        <span class="px-2 py-1 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-green-100 text-green-800': getSensorStatus(sensor) === 'active',
+                'bg-red-100 text-red-800': getSensorStatus(sensor) === 'inactive',
+                'bg-yellow-100 text-yellow-800': getSensorStatus(sensor) === 'warning'
+              }">
+          {{ getSensorStatus(sensor) | titlecase }}
         </span>
-      </p>
-      <p class="text-gray-500 text-xs">Recorded: {{ sensor.recorded_at }}</p>
+      </div>
+
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Temperature:</span>
+          <span class="font-medium" [ngClass]="{
+            'text-green-600': sensor.temperature < 5,
+            'text-yellow-600': sensor.temperature >= 5 && sensor.temperature <= 10,
+            'text-red-600': sensor.temperature > 10
+          }">
+            {{ sensor.temperature }} °C
+          </span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-600">Humidity:</span>
+          <span class="font-medium">{{ sensor.humidity }} %</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-600">Power Status:</span>
+          <span class="font-medium" [ngClass]="{
+            'text-green-600': sensor.power_status === 'ON',
+            'text-red-600': sensor.power_status !== 'ON'
+          }">
+            {{ sensor.power_status }}
+          </span>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-gray-200">
+        <button
+          (click)="createAndPrintRecord(sensor)"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-sm font-medium transition-colors duration-200"
+          [disabled]="getSensorStatus(sensor) !== 'active'">
+          Create & Print Record
+        </button>
+      </div>
+
+      <p class="text-gray-400 text-xs mt-2">Recorded: {{ sensor.recorded_at }}</p>
     </div>
   </div>
 
-  <div *ngIf="!loading && sensors.length === 0" class="text-gray-500">No IoT data available.</div>
+  <div *ngIf="!loading && sensors.length === 0" class="text-center py-8">
+    <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+    </svg>
+    <p class="text-gray-500">No IoT sensor data available.</p>
+    <p class="text-sm text-gray-400 mt-1">Check your sensor connections and try refreshing.</p>
+  </div>
 </div>
