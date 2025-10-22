@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,49 +9,61 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './family-portal.html'
 })
-export class FamilyPortal {
-  searchRecordId: string = '';
-  searchName: string = '';
-  searchResult: any = null;
-  searchAttempted: boolean = false;
-  loading: boolean = false;
+export class FamilyPortal implements OnInit {
+   searchRecordId: string = '';
+   searchName: string = '';
+   searchResult: any = null;
+   searchAttempted: boolean = false;
+   loading: boolean = false;
+   allRecords: any[] = [];
 
-  constructor(private http: HttpClient) {}
+   constructor(private http: HttpClient) {}
 
-  searchRecord() {
-    if (!this.searchRecordId.trim() && !this.searchName.trim()) {
-      alert('Please enter either Record ID or Full Name to search');
-      return;
-    }
+   ngOnInit() {
+     this.loadAllRecords();
+   }
 
-    this.loading = true;
-    this.searchAttempted = true;
+   loadAllRecords() {
+     this.http.get('https://kilnenterprise.com/mortuary/get_records.php').subscribe({
+       next: (res: any) => {
+         if (res.success && res.data) {
+           this.allRecords = res.data;
+         }
+       },
+       error: (err) => {
+         console.error('Error loading records:', err);
+       }
+     });
+   }
 
-    // Search by record ID or name
-    const searchParams: any = {};
-    if (this.searchRecordId.trim()) {
-      searchParams.record_id = this.searchRecordId.trim();
-    }
-    if (this.searchName.trim()) {
-      searchParams.full_name = this.searchName.trim();
-    }
+   searchRecord() {
+     if (!this.searchRecordId.trim() && !this.searchName.trim()) {
+       alert('Please enter either Record ID or Full Name to search');
+       return;
+     }
 
-    this.http.post('https://kilnenterprise.com/mortuary/search_records.php', searchParams).subscribe({
-      next: (res: any) => {
-        this.loading = false;
-        if (res.success && res.data) {
-          this.searchResult = res.data;
-        } else {
-          this.searchResult = null;
-        }
-      },
-      error: (err) => {
-        this.loading = false;
-        this.searchResult = null;
-        alert('Search failed. Please try again or contact support.');
-      }
-    });
-  }
+     this.loading = true;
+     this.searchAttempted = true;
+
+     // Filter records based on search criteria
+     this.searchResult = null;
+
+     setTimeout(() => {
+       this.loading = false;
+
+       if (this.searchRecordId.trim()) {
+         this.searchResult = this.allRecords.find(record =>
+           record.id.toString() === this.searchRecordId.trim()
+         );
+       }
+
+       if (this.searchName.trim() && !this.searchResult) {
+         this.searchResult = this.allRecords.find(record =>
+           record.full_name.toLowerCase().includes(this.searchName.trim().toLowerCase())
+         );
+       }
+     }, 500); // Small delay to show loading state
+   }
 
   clearSearch() {
     this.searchRecordId = '';
