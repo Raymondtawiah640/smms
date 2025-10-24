@@ -17,7 +17,7 @@
           name="sensor_id"
           [(ngModel)]="reading.sensor_id"
           required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
           <option value="">Select Storage Unit...</option>
           <option value="SENSOR-01">SENSOR-01</option>
           <option value="SENSOR-02">SENSOR-02</option>
@@ -86,7 +86,7 @@
       <button
         type="submit"
         [disabled]="!readingForm.form.valid || loading"
-        class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200 flex items-center justify-center">
+        class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white py-3 px-4 rounded-md font-medium transition-colors duration-200 flex items-center justify-center cursor-pointer">
         <span *ngIf="loading" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
         {{ loading ? 'Adding Reading...' : 'Add Sensor Reading' }}
       </button>
@@ -97,25 +97,25 @@
       <button
         type="button"
         (click)="setQuickReading('SENSOR-01', '3.5', '68.0', 'ON')"
-        class="bg-green-100 hover:bg-green-200 text-green-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200">
+        class="bg-green-100 hover:bg-green-200 text-green-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200 cursor-pointer">
         Unit 01 (Normal)
       </button>
       <button
         type="button"
         (click)="setQuickReading('SENSOR-02', '4.2', '72.0', 'ON')"
-        class="bg-green-100 hover:bg-green-200 text-green-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200">
+        class="bg-green-100 hover:bg-green-200 text-green-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200 cursor-pointer">
         Unit 02 (Normal)
       </button>
       <button
         type="button"
         (click)="setQuickReading('SENSOR-03', '2.8', '65.0', 'OFF')"
-        class="bg-red-100 hover:bg-red-200 text-red-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200">
+        class="bg-red-100 hover:bg-red-200 text-red-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200 cursor-pointer">
         Unit 03 (OFF)
       </button>
       <button
         type="button"
         (click)="clearForm()"
-        class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200">
+        class="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-2 rounded text-xs font-medium transition-colors duration-200 cursor-pointer">
         Clear Form
       </button>
     </div>

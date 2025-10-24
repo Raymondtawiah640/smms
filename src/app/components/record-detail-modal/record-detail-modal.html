@@ -1,6 +1,6 @@
 <div *ngIf="visible" class="fixed inset-0 bg-gray-400 bg-opacity-50 flex justify-center items-center z-50">
   <div class="bg-white rounded-2xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
-    <button (click)="onCloseModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl z-10">×</button>
+    <button (click)="onCloseModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl z-10 cursor-pointer">×</button>
 
     <!-- Message Display -->
     <div *ngIf="message" class="mx-6 mt-6 p-4 rounded-lg"
@@ -60,7 +60,7 @@
             <span><strong>Amount:</strong> GHS {{ record.amount || '0.00' }}</span>
             <button
               (click)="startEditingAmount()"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium transition-colors duration-200">
+              class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium transition-colors duration-200 cursor-pointer">
               Edit Amount
             </button>
           </div>
@@ -74,12 +74,12 @@
               placeholder="Enter amount">
             <button
               (click)="saveAmount()"
-              class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium">
+              class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium cursor-pointer">
               Save
             </button>
             <button
               (click)="cancelEditingAmount()"
-              class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded text-xs font-medium">
+              class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-1 rounded text-xs font-medium cursor-pointer">
               Cancel
             </button>
           </div>
@@ -95,7 +95,7 @@
               </span>
               <button
                 (click)="startEditingPaidStatus()"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium transition-colors duration-200">
+                class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium transition-colors duration-200 cursor-pointer">
                 Edit Status
               </button>
             </div>
@@ -121,7 +121,7 @@
             </label>
             <button
               (click)="savePaidStatus()"
-              class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium">
+              class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium cursor-pointer">
               Save
             </button>
             <button
@@ -135,7 +135,7 @@
       </div>
 
       <div class="mt-6 text-center">
-        <button (click)="onCloseModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+        <button (click)="onCloseModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 cursor-pointer">
           Close
         </button>
       </div>

@@ -30,7 +30,7 @@
           <button
             (click)="searchRecord()"
             [disabled]="loading"
-            class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium">
+            class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium cursor-pointer">
             {{ loading ? 'Searching...' : 'Search Record' }}
           </button>
         </div>
@@ -262,7 +262,7 @@
             <div class="font-medium text-gray-800">Office Hours</div>
             <div class="text-gray-600">Monday - Sunday: 24/7</div>
           </div>
-          <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium mt-4">
+          <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium mt-4 cursor-pointer">
             Contact Support
           </button>
         </div>

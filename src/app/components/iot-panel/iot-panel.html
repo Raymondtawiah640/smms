@@ -7,12 +7,12 @@
   <div class="mb-4 flex gap-2">
     <button
       (click)="fetchIoT()"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm cursor-pointer">
       Refresh Status
     </button>
     <button
       (click)="printAllRecords()"
-      class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+      class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm cursor-pointer">
       Print Report
     </button>
   </div>
@@ -76,7 +76,7 @@
       <div class="mt-4 pt-3 border-t border-gray-200">
         <button
           (click)="createAndPrintRecord(sensor)"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-sm font-medium transition-colors duration-200"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-sm font-medium transition-colors duration-200 cursor-pointer"
           [disabled]="getSensorStatus(sensor) !== 'active'">
           Create & Print Record
         </button>
