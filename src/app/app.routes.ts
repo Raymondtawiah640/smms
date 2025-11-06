@@ -8,11 +8,13 @@ import { FamilyPortal } from './components/family-portal/family-portal';
 import { Payments } from './components/payments/payments';
 import { Signup } from './components/signup/signup';
 import { Login } from './components/login/login';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'signup', component: Signup },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'dashboard', component: Dashboard },
   { path: 'records', component: RecordList },
   { path: 'add-record', component: AddRecord },

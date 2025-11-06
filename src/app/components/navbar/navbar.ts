@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class Navbar implements OnInit, OnDestroy {
   mobileMenuOpen = false;
+  profileDropdownOpen = false;
   isLoggedIn = false;
   user: any = null;
   private userSubscription: Subscription | undefined;
@@ -35,6 +36,7 @@ export class Navbar implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.closeProfileDropdown();
   }
 
   toggleMobileMenu() {
@@ -43,5 +45,14 @@ export class Navbar implements OnInit, OnDestroy {
 
   closeMobileMenu() {
     this.mobileMenuOpen = false;
+    this.closeProfileDropdown();
+  }
+
+  toggleProfileDropdown() {
+    this.profileDropdownOpen = !this.profileDropdownOpen;
+  }
+
+  closeProfileDropdown() {
+    this.profileDropdownOpen = false;
   }
 }
