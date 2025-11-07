@@ -46,17 +46,17 @@ try {
         exit;
     }
 
-    // Store reset code with expiration (15 minutes)
-    $expires_at = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+    // Delete any existing reset codes for this user
+    $stmt = $pdo->prepare("DELETE FROM password_resets WHERE user_id = ?");
+    $stmt->execute([$user['id']]);
+
+    // Store reset code with expiration (1 hour)
+    $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
     $stmt = $pdo->prepare("
-        INSERT INTO password_resets (user_id, reset_code, expires_at, created_at)
-        VALUES (?, ?, ?, NOW())
-        ON DUPLICATE KEY UPDATE
-        reset_code = VALUES(reset_code),
-        expires_at = VALUES(expires_at),
-        created_at = NOW()
+        INSERT INTO password_resets (user_id, username, reset_code, expires_at, created_at)
+        VALUES (?, ?, ?, ?, NOW())
     ");
-    $stmt->execute([$user['id'], $reset_code, $expires_at]);
+    $stmt->execute([$user['id'], $user['username'], $reset_code, $expires_at]);
 
     // Return success with the user's username for frontend use
     echo json_encode([
