@@ -13,13 +13,14 @@ import { AuthService } from '../../services/auth.service';
 export class ForgotPasswordComponent {
   step: 'email' | 'code' | 'reset' = 'email';
   username: string = '';
-  email: string = '';
   resetCode: string = '';
   newPassword: string = '';
   confirmPassword: string = '';
   loading: boolean = false;
   message: string = '';
   generatedCode: string = '';
+  showNewPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -41,7 +42,6 @@ export class ForgotPasswordComponent {
         this.loading = false;
         console.log('Response:', response); // Debug log
         if (response.success) {
-          this.email = response.email; // Store the email for later use
           this.step = 'code';
           this.message = 'Reset code generated successfully.';
         } else {
@@ -86,7 +86,7 @@ export class ForgotPasswordComponent {
     this.message = '';
 
     // Reset password via backend
-    this.authService.resetPassword(this.email, this.newPassword).subscribe({
+    this.authService.resetPassword(this.resetCode, this.newPassword).subscribe({
       next: (response: any) => {
         this.loading = false;
         if (response.success) {
@@ -112,5 +112,13 @@ export class ForgotPasswordComponent {
 
   resendCode() {
     this.sendResetCode();
+  }
+
+  toggleNewPasswordVisibility() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

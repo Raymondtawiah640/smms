@@ -62,7 +62,7 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Reset code generated successfully',
-        'email' => $user['username'],
+        'username' => $user['username'],
         'debug_code' => $reset_code // Remove this in production
     ]);
 

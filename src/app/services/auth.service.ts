@@ -32,8 +32,8 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/forgot_password.php`, { username, reset_code: resetCode });
   }
 
-  resetPassword(email: string, newPassword: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset_password.php`, { email, new_password: newPassword });
+  resetPassword(resetCode: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset_password.php`, { reset_code: resetCode, new_password: newPassword });
   }
 
   logout() {

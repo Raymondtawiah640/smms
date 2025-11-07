@@ -17,18 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!$data || !isset($data['email']) || !isset($data['new_password'])) {
-    echo json_encode(['success' => false, 'message' => 'Email and new password are required']);
+if (!$data || !isset($data['reset_code']) || !isset($data['new_password'])) {
+    echo json_encode(['success' => false, 'message' => 'Reset code and new password are required']);
     exit;
 }
 
-$email = trim($data['email']);
+$reset_code = trim($data['reset_code']);
 $new_password = trim($data['new_password']);
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid email format']);
-    exit;
-}
 
 if (strlen($new_password) < 6) {
     echo json_encode(['success' => false, 'message' => 'Password must be at least 6 characters long']);
@@ -36,26 +31,16 @@ if (strlen($new_password) < 6) {
 }
 
 try {
-    // Check if there's a valid reset code for this user
+    // Check if there's a valid reset code
     $stmt = $pdo->prepare("
         SELECT pr.user_id, pr.reset_code, pr.expires_at, u.id as user_id
         FROM password_resets pr
         JOIN users u ON pr.user_id = u.id
-        WHERE pr.user_id = (SELECT id FROM users WHERE username = ?) AND pr.expires_at > NOW()
+        WHERE pr.reset_code = ? AND pr.expires_at > NOW()
         ORDER BY pr.created_at DESC
         LIMIT 1
     ");
-    // Get username from email first
-    $username_stmt = $pdo->prepare("SELECT username FROM users WHERE username = ?");
-    $username_stmt->execute([$email]); // $email contains username in this context
-    $user_row = $username_stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$user_row) {
-        echo json_encode(['success' => false, 'message' => 'User not found']);
-        exit;
-    }
-
-    $stmt->execute([$user_row['username']]);
+    $stmt->execute([$reset_code]);
     $reset_record = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$reset_record) {
