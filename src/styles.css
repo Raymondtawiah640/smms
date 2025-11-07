@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
-/* Dark mode styles */
+/* Theme styles */
 .dark {
   --bg-primary: #1f2937;
   --bg-secondary: #111827;
@@ -11,25 +11,53 @@
   --hover-bg: #374151;
 }
 
-.dark body {
+.blue-theme {
+  --bg-primary: #eff6ff;
+  --bg-secondary: #dbeafe;
+  --text-primary: #1e40af;
+  --text-secondary: #3b82f6;
+  --border-color: #93c5fd;
+  --hover-bg: #bfdbfe;
+}
+
+.purple-theme {
+  --bg-primary: #faf5ff;
+  --bg-secondary: #f3e8ff;
+  --text-primary: #7c3aed;
+  --text-secondary: #a855f7;
+  --border-color: #d8b4fe;
+  --hover-bg: #e9d5ff;
+}
+
+.dark body,
+.blue-theme body,
+.purple-theme body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
 
-/* Dark mode overrides for common elements */
-.dark .bg-white {
+/* Theme overrides for common elements */
+.dark .bg-white,
+.blue-theme .bg-white,
+.purple-theme .bg-white {
   background-color: var(--bg-secondary) !important;
 }
 
-.dark .text-gray-900 {
+.dark .text-gray-900,
+.blue-theme .text-gray-900,
+.purple-theme .text-gray-900 {
   color: var(--text-primary) !important;
 }
 
-.dark .text-gray-700 {
+.dark .text-gray-700,
+.blue-theme .text-gray-700,
+.purple-theme .text-gray-700 {
   color: var(--text-secondary) !important;
 }
 
-.dark .text-gray-600 {
+.dark .text-gray-600,
+.blue-theme .text-gray-600,
+.purple-theme .text-gray-600 {
   color: var(--text-secondary) !important;
 }
 
@@ -93,7 +121,9 @@
   color: #7c3aed !important;
 }
 
-.dark .border-gray-300 {
+.dark .border-gray-300,
+.blue-theme .border-gray-300,
+.purple-theme .border-gray-300 {
   border-color: var(--border-color) !important;
 }
 
@@ -101,11 +131,15 @@
   border-color: var(--border-color) !important;
 }
 
-.dark .bg-gray-50 {
+.dark .bg-gray-50,
+.blue-theme .bg-gray-50,
+.purple-theme .bg-gray-50 {
   background-color: var(--bg-secondary) !important;
 }
 
-.dark .bg-gray-100 {
+.dark .bg-gray-100,
+.blue-theme .bg-gray-100,
+.purple-theme .bg-gray-100 {
   background-color: var(--bg-primary) !important;
 }
 

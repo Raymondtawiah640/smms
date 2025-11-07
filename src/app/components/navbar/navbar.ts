@@ -17,7 +17,7 @@ export class Navbar implements OnInit, OnDestroy {
   profileDropdownOpen = false;
   isLoggedIn = false;
   user: any = null;
-  isDarkMode = false;
+  currentTheme: string = 'light';
   private userSubscription: Subscription | undefined;
   private themeSubscription: Subscription | undefined;
 
@@ -29,8 +29,8 @@ export class Navbar implements OnInit, OnDestroy {
       this.isLoggedIn = !!user;
     });
 
-    this.themeSubscription = this.themeService.darkMode$.subscribe(isDark => {
-      this.isDarkMode = isDark;
+    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
+      this.currentTheme = theme;
     });
   }
 
@@ -66,7 +66,7 @@ export class Navbar implements OnInit, OnDestroy {
     this.profileDropdownOpen = false;
   }
 
-  toggleDarkMode() {
-    this.themeService.toggleDarkMode();
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 }
