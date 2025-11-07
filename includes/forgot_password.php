@@ -51,12 +51,13 @@ try {
     $stmt->execute([$user['id']]);
 
     // Store reset code with expiration (1 hour)
-    $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
     $stmt = $pdo->prepare("
         INSERT INTO password_resets (user_id, username, reset_code, expires_at, created_at)
-        VALUES (?, ?, ?, ?, NOW())
+        VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR), NOW())
     ");
-    $stmt->execute([$user['id'], $user['username'], $reset_code, $expires_at]);
+    $stmt->execute([$user['id'], $user['username'], $reset_code]);
+
+    error_log('Inserted reset_code: ' . $reset_code . ' for user ' . $user['username'] . ' expires at ' . $expires_at);
 
     // Return success with the user's username for frontend use
     echo json_encode([

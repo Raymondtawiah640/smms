@@ -25,6 +25,8 @@ if (!$data || !isset($data['reset_code']) || !isset($data['new_password'])) {
 $reset_code = trim($data['reset_code']);
 $new_password = trim($data['new_password']);
 
+error_log('Reset password attempt with reset_code: ' . $reset_code);
+
 if (strlen($new_password) < 6) {
     echo json_encode(['success' => false, 'message' => 'Password must be at least 6 characters long']);
     exit;
@@ -44,6 +46,7 @@ try {
     $reset_record = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$reset_record) {
+        error_log('No valid reset code found for: ' . $reset_code);
         echo json_encode(['success' => false, 'message' => 'No valid reset code found. Please request a new one.']);
         exit;
     }
