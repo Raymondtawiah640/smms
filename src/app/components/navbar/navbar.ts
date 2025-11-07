@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,20 +17,29 @@ export class Navbar implements OnInit, OnDestroy {
   profileDropdownOpen = false;
   isLoggedIn = false;
   user: any = null;
+  isDarkMode = false;
   private userSubscription: Subscription | undefined;
+  private themeSubscription: Subscription | undefined;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private themeService: ThemeService) {}
 
   ngOnInit() {
     this.userSubscription = this.authService.getUserObservable().subscribe(user => {
       this.user = user;
       this.isLoggedIn = !!user;
     });
+
+    this.themeSubscription = this.themeService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
   }
 
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -54,5 +64,9 @@ export class Navbar implements OnInit, OnDestroy {
 
   closeProfileDropdown() {
     this.profileDropdownOpen = false;
+  }
+
+  toggleDarkMode() {
+    this.themeService.toggleDarkMode();
   }
 }
