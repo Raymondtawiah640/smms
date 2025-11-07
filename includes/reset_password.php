@@ -45,9 +45,24 @@ try {
     $stmt->execute([$reset_code]);
     $reset_record = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    error_log('Reset record found: ' . ($reset_record ? 'YES' : 'NO') . ' for code: ' . $reset_code);
+    if ($reset_record) {
+        error_log('Expires at: ' . $reset_record['expires_at'] . ' Current time: ' . date('Y-m-d H:i:s'));
+    } else {
+        // Check if record exists but is expired
+        $stmt2 = $pdo->prepare("SELECT * FROM password_resets WHERE reset_code = ?");
+        $stmt2->execute([$reset_code]);
+        $expired_record = $stmt2->fetch(PDO::FETCH_ASSOC);
+        if ($expired_record) {
+            error_log('Record exists but expired. Expires at: ' . $expired_record['expires_at'] . ' Current time: ' . date('Y-m-d H:i:s'));
+        } else {
+            error_log('No record found with reset_code: ' . $reset_code);
+        }
+    }
+
     if (!$reset_record) {
         error_log('No valid reset code found for: ' . $reset_code);
-        echo json_encode(['success' => false, 'message' => 'No valid reset code found. Please request a new one.']);
+        echo json_encode(['success' => false, 'message' => 'No valid reset code found. Please request a new one.', 'debug' => 'Code: ' . $reset_code]);
         exit;
     }
 
