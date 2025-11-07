@@ -51,7 +51,7 @@ try {
     $stmt->execute([$user['id']]);
 
     // Store reset code with expiration (1 hour)
-    $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
+    $expires_at = gmdate('Y-m-d H:i:s', strtotime('+1 hour'));
     $stmt = $pdo->prepare("
         INSERT INTO password_resets (user_id, username, reset_code, expires_at, created_at)
         VALUES (?, ?, ?, ?, NOW())

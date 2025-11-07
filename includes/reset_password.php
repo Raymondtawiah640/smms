@@ -38,7 +38,7 @@ try {
         SELECT pr.user_id, pr.reset_code, pr.expires_at, u.id as user_id
         FROM password_resets pr
         JOIN users u ON pr.user_id = u.id
-        WHERE pr.reset_code = ? AND pr.expires_at > NOW()
+        WHERE pr.reset_code = ? AND pr.expires_at > UTC_TIMESTAMP()
         ORDER BY pr.created_at DESC
         LIMIT 1
     ");
@@ -47,14 +47,14 @@ try {
 
     error_log('Reset record found: ' . ($reset_record ? 'YES' : 'NO') . ' for code: ' . $reset_code);
     if ($reset_record) {
-        error_log('Expires at: ' . $reset_record['expires_at'] . ' Current time: ' . date('Y-m-d H:i:s'));
+        error_log('Expires at: ' . $reset_record['expires_at'] . ' Current UTC time: ' . gmdate('Y-m-d H:i:s'));
     } else {
         // Check if record exists but is expired
         $stmt2 = $pdo->prepare("SELECT * FROM password_resets WHERE reset_code = ?");
         $stmt2->execute([$reset_code]);
         $expired_record = $stmt2->fetch(PDO::FETCH_ASSOC);
         if ($expired_record) {
-            error_log('Record exists but expired. Expires at: ' . $expired_record['expires_at'] . ' Current time: ' . date('Y-m-d H:i:s'));
+            error_log('Record exists but expired. Expires at: ' . $expired_record['expires_at'] . ' Current UTC time: ' . gmdate('Y-m-d H:i:s'));
         } else {
             error_log('No record found with reset_code: ' . $reset_code);
         }
