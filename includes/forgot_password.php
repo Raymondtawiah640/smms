@@ -37,7 +37,7 @@ if (strlen($reset_code) !== 4 || !is_numeric($reset_code)) {
 
 try {
     // Check if user exists by username
-    $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE username = ?");
+    $stmt = $pdo->prepare("SELECT id, username FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -49,20 +49,20 @@ try {
     // Store reset code with expiration (15 minutes)
     $expires_at = date('Y-m-d H:i:s', strtotime('+15 minutes'));
     $stmt = $pdo->prepare("
-        INSERT INTO password_resets (user_id, email, reset_code, expires_at, created_at)
-        VALUES (?, ?, ?, ?, NOW())
+        INSERT INTO password_resets (user_id, reset_code, expires_at, created_at)
+        VALUES (?, ?, ?, NOW())
         ON DUPLICATE KEY UPDATE
         reset_code = VALUES(reset_code),
         expires_at = VALUES(expires_at),
         created_at = NOW()
     ");
-    $stmt->execute([$user['id'], $user['email'], $reset_code, $expires_at]);
+    $stmt->execute([$user['id'], $reset_code, $expires_at]);
 
-    // Return success with the user's email for frontend use
+    // Return success with the user's username for frontend use
     echo json_encode([
         'success' => true,
         'message' => 'Reset code generated successfully',
-        'email' => $user['email'],
+        'email' => $user['username'],
         'debug_code' => $reset_code // Remove this in production
     ]);
 
