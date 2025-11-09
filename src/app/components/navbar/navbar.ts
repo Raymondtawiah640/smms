@@ -16,6 +16,7 @@ export class Navbar implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   profileDropdownOpen = false;
   isLoggedIn = false;
+  isFamily = false;
   user: any = null;
   currentTheme: string = 'light';
   private userSubscription: Subscription | undefined;
@@ -27,6 +28,7 @@ export class Navbar implements OnInit, OnDestroy {
     this.userSubscription = this.authService.getUserObservable().subscribe(user => {
       this.user = user;
       this.isLoggedIn = !!user;
+      this.isFamily = user && user.role === 'family';
     });
 
     this.themeSubscription = this.themeService.theme$.subscribe(theme => {

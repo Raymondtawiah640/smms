@@ -44,47 +44,49 @@
           </svg>
         </button>
         <ng-container *ngIf="isLoggedIn">
-          <a
-            routerLink="/dashboard"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-          >
-            Dashboard
-          </a>
-          <a
-            routerLink="/records"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-          >
-            Records
-          </a>
-          <a
-            routerLink="/iot-panel"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-          >
-            IoT Panel
-          </a>
-          <a
-            routerLink="/sensor-input"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-          >
-            Add Sensor Data
-          </a>
+          <ng-container *ngIf="!isFamily">
+            <a
+              routerLink="/dashboard"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              Dashboard
+            </a>
+            <a
+              routerLink="/records"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              Records
+            </a>
+            <a
+              routerLink="/iot-panel"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              IoT Panel
+            </a>
+            <a
+              routerLink="/sensor-input"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              Add Sensor Data
+            </a>
+            <a
+              routerLink="/payments"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            >
+              Payments
+            </a>
+          </ng-container>
           <a
             routerLink="/family-portal"
             routerLinkActive="bg-gray-900 text-yellow-300"
             class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
           >
             Family Portal
-          </a>
-          <a
-            routerLink="/payments"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-          >
-            Payments
           </a>
           <div class="text-gray-300">|</div>
           <div class="relative">
@@ -157,38 +159,48 @@
     <div *ngIf="mobileMenuOpen" class="md:hidden border-t border-gray-700">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <ng-container *ngIf="isLoggedIn">
-          <a
-            routerLink="/dashboard"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            (click)="closeMobileMenu()"
-            class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-          >
-            Dashboard
-          </a>
-          <a
-            routerLink="/records"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            (click)="closeMobileMenu()"
-            class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-          >
-            Records
-          </a>
-          <a
-            routerLink="/iot-panel"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            (click)="closeMobileMenu()"
-            class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-          >
-            IoT Panel
-          </a>
-          <a
-            routerLink="/sensor-input"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            (click)="closeMobileMenu()"
-            class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-          >
-            Add Sensor Data
-          </a>
+          <ng-container *ngIf="!isFamily">
+            <a
+              routerLink="/dashboard"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              (click)="closeMobileMenu()"
+              class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            >
+              Dashboard
+            </a>
+            <a
+              routerLink="/records"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              (click)="closeMobileMenu()"
+              class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            >
+              Records
+            </a>
+            <a
+              routerLink="/iot-panel"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              (click)="closeMobileMenu()"
+              class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            >
+              IoT Panel
+            </a>
+            <a
+              routerLink="/sensor-input"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              (click)="closeMobileMenu()"
+              class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            >
+              Add Sensor Data
+            </a>
+            <a
+              routerLink="/payments"
+              routerLinkActive="bg-gray-900 text-yellow-300"
+              (click)="closeMobileMenu()"
+              class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            >
+              Payments
+            </a>
+          </ng-container>
           <a
             routerLink="/family-portal"
             routerLinkActive="bg-gray-900 text-yellow-300"
@@ -196,14 +208,6 @@
             class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
           >
             Family Portal
-          </a>
-          <a
-            routerLink="/payments"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            (click)="closeMobileMenu()"
-            class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-          >
-            Payments
           </a>
           <div class="px-3 py-2 text-sm text-gray-300">{{ user.username }} ({{ user.role }})</div>
           <button (click)="logout(); closeMobileMenu(); closeProfileDropdown()" class="block w-full text-left hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 cursor-pointer">
