@@ -71,14 +71,23 @@ export class SensorInput implements OnInit {
   }
 
   loadRecentReadings() {
+    this.loading = true;
     this.http.get('https://kilnenterprise.com/mortuary/get_iot_data.php').subscribe({
       next: (res: any) => {
         if (res.success && res.data) {
           this.recentReadings = res.data.slice(0, 5); // Show last 5 readings
         }
+        // Add consistent loading delay
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       },
       error: (err) => {
         console.error('Could not load recent readings:', err);
+        // Add consistent loading delay even on error
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       }
     });
   }

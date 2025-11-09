@@ -34,12 +34,18 @@ export class IoTPanel implements OnInit, OnDestroy {
     this.http.get('https://kilnenterprise.com/mortuary/get_iot_data.php').subscribe({
       next: (res: any) => {
         this.sensors = res.data || [];
-        this.loading = false;
-        this.lastUpdate = new Date();
+        // Add consistent loading delay
+        setTimeout(() => {
+          this.loading = false;
+          this.lastUpdate = new Date();
+        }, 3000);
       },
       error: (err) => {
-        this.loading = false;
-        this.showOfflineMessage('Sensor data temporarily unavailable');
+        // Add consistent loading delay even on error
+        setTimeout(() => {
+          this.loading = false;
+          this.showOfflineMessage('Sensor data temporarily unavailable');
+        }, 3000);
       }
     });
   }

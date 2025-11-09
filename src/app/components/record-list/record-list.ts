@@ -43,11 +43,17 @@ export class RecordList implements OnInit {
       next: (res: any) => {
         this.records = res.data || [];
         this.filteredRecords = [...this.records]; // Initialize filtered records
-        this.loading = false;
+        // Add consistent loading delay
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       },
       error: (err) => {
         console.error('Error fetching records:', err);
-        this.loading = false;
+        // Add consistent loading delay even on error
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       }
     });
   }

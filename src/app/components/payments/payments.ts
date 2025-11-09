@@ -37,11 +37,17 @@ export class Payments implements OnInit {
     this.http.get('https://kilnenterprise.com/mortuary/get_invoices.php').subscribe({
       next: (res: any) => {
         this.invoices = res.data || [];
-        this.loading = false;
+        // Add consistent loading delay
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       },
       error: (err) => {
         console.error('Error fetching invoices:', err);
-        this.loading = false;
+        // Add consistent loading delay even on error
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       }
     });
   }

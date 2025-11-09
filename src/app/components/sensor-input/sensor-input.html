@@ -1,8 +1,18 @@
 <div class="p-4 min-h-screen bg-gray-50">
-  <div class="mb-4">
-    <h2 class="text-2xl font-semibold text-gray-800">Cold Storage Data Entry</h2>
-    <p class="text-gray-600 text-sm mt-1">Enter temperature and humidity readings from mortuary cold storage units</p>
-  </div>
+   <!-- Loading State -->
+   <div *ngIf="loading" class="flex justify-center items-center py-12">
+     <div class="text-center">
+       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+       <p class="text-gray-500 text-lg">Loading sensor data...</p>
+     </div>
+   </div>
+
+   <!-- Main Content -->
+   <div *ngIf="!loading">
+     <div class="mb-4">
+       <h2 class="text-2xl font-semibold text-gray-800">Cold Storage Data Entry</h2>
+       <p class="text-gray-600 text-sm mt-1">Enter temperature and humidity readings from mortuary cold storage units</p>
+     </div>
 
   <form (ngSubmit)="addSensorReading()" #readingForm="ngForm" class="bg-white p-6 rounded-lg shadow-md">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

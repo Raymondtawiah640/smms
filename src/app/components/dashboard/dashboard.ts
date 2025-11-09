@@ -33,11 +33,17 @@ export class Dashboard implements OnInit {
     this.http.get('https://kilnenterprise.com/mortuary/get_records.php').subscribe({
       next: (res: any) => {
         this.records = res.data || [];
-        this.loading = false;
+        // Add consistent loading delay
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       },
       error: (err) => {
         console.error('Error loading records:', err);
-        this.loading = false;
+        // Add consistent loading delay even on error
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000);
       }
     });
 

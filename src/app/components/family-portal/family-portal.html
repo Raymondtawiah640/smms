@@ -1,10 +1,20 @@
 <div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
-  <!-- Header -->
-  <div class="max-w-4xl mx-auto mb-8">
-    <div class="text-center mb-6">
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Family Portal</h1>
-      <p class="text-gray-600">Track your loved one's information and receive updates</p>
-    </div>
+   <!-- Loading State -->
+   <div *ngIf="loading" class="flex justify-center items-center py-12">
+     <div class="text-center">
+       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+       <p class="text-gray-500 text-lg">Loading family portal data...</p>
+     </div>
+   </div>
+
+   <!-- Main Content -->
+   <div *ngIf="!loading" class="max-w-4xl mx-auto">
+     <!-- Header -->
+     <div class="mb-8">
+       <div class="text-center mb-6">
+         <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Family Portal</h1>
+         <p class="text-gray-600">Track your loved one's information and receive updates</p>
+       </div>
 
     <!-- Record Lookup -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -29,9 +39,10 @@
         <div class="flex items-end">
           <button
             (click)="searchRecord()"
-            [disabled]="loading"
-            class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium cursor-pointer">
-            {{ loading ? 'Searching...' : 'Search Record' }}
+            [disabled]="loading || !dataLoaded"
+            class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md font-medium cursor-pointer flex items-center justify-center">
+            <span *ngIf="loading" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+            {{ loading ? 'Searching...' : !dataLoaded ? 'Loading Data...' : 'Search Record' }}
           </button>
         </div>
       </div>
@@ -74,6 +85,16 @@
                 {{ searchResult.status | titlecase }}
               </span>
             </div>
+            <div class="flex justify-between" *ngIf="searchResult.paid !== undefined">
+              <span class="text-gray-600">Payment Status:</span>
+              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                    [ngClass]="{
+                      'text-green-600 font-medium': searchResult.paid == 1,
+                      'text-red-600 font-medium': searchResult.paid == 0
+                    }">
+                {{ searchResult.paid == 1 ? 'Paid' : 'Pending' }}
+              </span>
+            </div>
             <div class="flex justify-between">
               <span class="text-gray-600">Storage Location:</span>
               <span class="font-medium">{{ searchResult.storage_slot || 'Not assigned' }}</span>
@@ -114,7 +135,7 @@
       </div>
 
       <!-- Financial Information (if applicable) -->
-      <div class="mt-6" *ngIf="searchResult.amount || searchResult.paid || searchResult.invoice_id">
+      <div class="mt-6" *ngIf="searchResult.amount || searchResult.paid !== undefined || searchResult.invoice_id">
         <h4 class="font-medium text-gray-800 mb-3">Financial Information</h4>
         <div class="bg-gray-50 p-4 rounded-lg">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -126,10 +147,10 @@
               <span class="text-gray-600">Payment Status:</span>
               <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
                     [ngClass]="{
-                      'bg-green-100 text-green-800': searchResult.paid === '1',
-                      'bg-red-100 text-red-800': searchResult.paid === '0'
+                      'text-green-600 font-medium': searchResult.paid == 1,
+                      'text-red-600 font-medium': searchResult.paid == 0
                     }">
-                {{ searchResult.paid === '1' ? 'Paid' : 'Unpaid' }}
+                {{ searchResult.paid == 1 ? 'Paid' : 'Pending' }}
               </span>
             </div>
             <div *ngIf="searchResult.invoice_id">
