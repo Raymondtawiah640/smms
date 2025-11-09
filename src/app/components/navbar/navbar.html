@@ -45,49 +45,49 @@
         </button>
         <ng-container *ngIf="isLoggedIn">
           <ng-container *ngIf="!isFamily">
+              <a
+                routerLink="/dashboard"
+                routerLinkActive="bg-gray-900 text-yellow-300"
+                class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                {{ translate('nav.dashboard') }}
+              </a>
+              <a
+                routerLink="/records"
+                routerLinkActive="bg-gray-900 text-yellow-300"
+                class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                {{ translate('nav.records') }}
+              </a>
+              <a
+                routerLink="/iot-panel"
+                routerLinkActive="bg-gray-900 text-yellow-300"
+                class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                {{ translate('nav.iot_panel') }}
+              </a>
+              <a
+                routerLink="/sensor-input"
+                routerLinkActive="bg-gray-900 text-yellow-300"
+                class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                {{ translate('nav.add_sensor_data') }}
+              </a>
+              <a
+                routerLink="/payments"
+                routerLinkActive="bg-gray-900 text-yellow-300"
+                class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              >
+                {{ translate('nav.payments') }}
+              </a>
+            </ng-container>
             <a
-              routerLink="/dashboard"
+              routerLink="/family-portal"
               routerLinkActive="bg-gray-900 text-yellow-300"
               class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
             >
-              Dashboard
+              {{ translate('nav.family_portal') }}
             </a>
-            <a
-              routerLink="/records"
-              routerLinkActive="bg-gray-900 text-yellow-300"
-              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Records
-            </a>
-            <a
-              routerLink="/iot-panel"
-              routerLinkActive="bg-gray-900 text-yellow-300"
-              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              IoT Panel
-            </a>
-            <a
-              routerLink="/sensor-input"
-              routerLinkActive="bg-gray-900 text-yellow-300"
-              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Add Sensor Data
-            </a>
-            <a
-              routerLink="/payments"
-              routerLinkActive="bg-gray-900 text-yellow-300"
-              class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            >
-              Payments
-            </a>
-          </ng-container>
-          <a
-            routerLink="/family-portal"
-            routerLinkActive="bg-gray-900 text-yellow-300"
-            class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-          >
-            Family Portal
-          </a>
           <div class="text-gray-300">|</div>
           <div class="relative">
             <button (click)="toggleProfileDropdown()" class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer" title="Profile Menu">
@@ -109,24 +109,52 @@
             </div>
           </div>
         </ng-container>
+        <!-- Language Selector -->
+        <div class="relative">
+          <select
+            [value]="currentLanguage"
+            (change)="setLanguage($any($event.target).value)"
+            class="bg-gray-700 text-white px-2 py-1 rounded text-xs border border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            title="Select Language"
+          >
+            <option *ngFor="let lang of availableLanguages" [value]="lang.code">
+              {{ lang.name }}
+            </option>
+          </select>
+        </div>
+
         <ng-container *ngIf="!isLoggedIn">
           <a
             routerLink="/login"
             class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
           >
-            Login
+            {{ translate('nav.login') }}
           </a>
           <a
             routerLink="/signup"
             class="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
           >
-            Sign Up
+            {{ translate('nav.signup') }}
           </a>
         </ng-container>
       </div>
 
       <!-- Mobile Menu Button -->
       <div class="md:hidden flex items-center space-x-2">
+        <!-- Language Selector for Mobile -->
+        <div class="relative">
+          <select
+            [value]="currentLanguage"
+            (change)="setLanguage($any($event.target).value)"
+            class="bg-gray-700 text-white px-1 py-1 rounded text-xs border border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            title="Select Language"
+          >
+            <option *ngFor="let lang of availableLanguages" [value]="lang.code">
+              {{ lang.name }}
+            </option>
+          </select>
+        </div>
+
         <!-- Dark Mode Toggle for Mobile -->
         <button (click)="toggleTheme()" class="p-2 rounded-md hover:bg-gray-700 transition-colors duration-200 cursor-pointer" title="Toggle Theme">
           <svg *ngIf="currentTheme === 'light'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,7 +193,7 @@
               (click)="closeMobileMenu()"
               class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
             >
-              Dashboard
+              {{ translate('nav.dashboard') }}
             </a>
             <a
               routerLink="/records"
@@ -173,7 +201,7 @@
               (click)="closeMobileMenu()"
               class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
             >
-              Records
+              {{ translate('nav.records') }}
             </a>
             <a
               routerLink="/iot-panel"
@@ -181,7 +209,7 @@
               (click)="closeMobileMenu()"
               class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
             >
-              IoT Panel
+              {{ translate('nav.iot_panel') }}
             </a>
             <a
               routerLink="/sensor-input"
@@ -189,7 +217,7 @@
               (click)="closeMobileMenu()"
               class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
             >
-              Add Sensor Data
+              {{ translate('nav.add_sensor_data') }}
             </a>
             <a
               routerLink="/payments"
@@ -197,7 +225,7 @@
               (click)="closeMobileMenu()"
               class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
             >
-              Payments
+              {{ translate('nav.payments') }}
             </a>
           </ng-container>
           <a
@@ -206,11 +234,11 @@
             (click)="closeMobileMenu()"
             class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
           >
-            Family Portal
+            {{ translate('nav.family_portal') }}
           </a>
           <div class="px-3 py-2 text-sm text-gray-300">{{ user.username }} ({{ user.role }})</div>
           <button (click)="logout(); closeMobileMenu(); closeProfileDropdown()" class="block w-full text-left hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 cursor-pointer">
-            Logout
+            {{ translate('nav.logout') }}
           </button>
         </ng-container>
         <ng-container *ngIf="!isLoggedIn">
@@ -219,15 +247,14 @@
             (click)="closeMobileMenu()"
             class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
           >
-            Login
+            {{ translate('nav.login') }}
           </a>
           <a
             routerLink="/signup"
-
             (click)="closeMobileMenu()"
             class="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
           >
-            Sign Up
+            {{ translate('nav.signup') }}
           </a>
         </ng-container>
       </div>

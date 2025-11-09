@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
+import { LanguageService, Language } from '../../services/language.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,10 +20,18 @@ export class Navbar implements OnInit, OnDestroy {
   isFamily = false;
   user: any = null;
   currentTheme: string = 'light';
+  currentLanguage: Language = 'en';
+  availableLanguages: { code: Language; name: string }[] = [];
   private userSubscription: Subscription | undefined;
   private themeSubscription: Subscription | undefined;
+  private languageSubscription: Subscription | undefined;
 
-  constructor(private authService: AuthService, private router: Router, private themeService: ThemeService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private themeService: ThemeService,
+    private languageService: LanguageService
+  ) {}
 
   ngOnInit() {
     this.userSubscription = this.authService.getUserObservable().subscribe(user => {
@@ -34,6 +43,12 @@ export class Navbar implements OnInit, OnDestroy {
     this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
     });
+
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(language => {
+      this.currentLanguage = language;
+    });
+
+    this.availableLanguages = this.languageService.getAvailableLanguages();
   }
 
   ngOnDestroy() {
@@ -42,6 +57,9 @@ export class Navbar implements OnInit, OnDestroy {
     }
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
+    }
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
     }
   }
 
@@ -70,5 +88,13 @@ export class Navbar implements OnInit, OnDestroy {
 
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  setLanguage(language: Language) {
+    this.languageService.setLanguage(language);
+  }
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
   }
 }

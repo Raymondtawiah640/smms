@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RecordDetailModal } from '../record-detail-modal/record-detail-modal';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-record-list',
@@ -32,7 +33,11 @@ export class RecordList implements OnInit {
   message: string = '';
   messageType: 'success' | 'error' = 'success';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private languageService: LanguageService) {}
+
+  translate(key: string): string {
+    return this.languageService.translate(key);
+  }
 
   ngOnInit() {
     this.loadRecords();
