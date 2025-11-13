@@ -143,10 +143,10 @@
             </div>
           </div>
           <div *ngIf="records.length > recordsLimit" class="text-center mt-4">
-            <button *ngIf="!showAllRecords" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <button *ngIf="!recordsExpanded" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
               Show More ({{ records.length - recordsLimit }} more)
             </button>
-            <button *ngIf="showAllRecords" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <button *ngIf="recordsExpanded" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
               Show Less
             </button>
           </div>
@@ -203,10 +203,10 @@
             </div>
           </div>
           <div *ngIf="iotData.length > sensorsLimit" class="text-center mt-4">
-            <button *ngIf="!showAllSensors" (click)="toggleShowAllSensors()" class="text-green-600 hover:text-green-800 text-sm font-medium">
+            <button *ngIf="!sensorsExpanded" (click)="toggleShowAllSensors()" class="text-green-600 hover:text-green-800 text-sm font-medium">
               Show More ({{ iotData.length - sensorsLimit }} more)
             </button>
-            <button *ngIf="showAllSensors" (click)="toggleShowAllSensors()" class="text-green-600 hover:text-green-800 text-sm font-medium">
+            <button *ngIf="sensorsExpanded" (click)="toggleShowAllSensors()" class="text-green-600 hover:text-green-800 text-sm font-medium">
               Show Less
             </button>
           </div>

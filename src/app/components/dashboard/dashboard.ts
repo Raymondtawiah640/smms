@@ -19,6 +19,8 @@ export class Dashboard implements OnInit {
   showAllSensors = false;
   recordsLimit = 3;
   sensorsLimit = 3;
+  recordsExpanded = false;
+  sensorsExpanded = false;
   systemInfo: any = {
     version: 'SMMS v1.0',
     lastBackup: new Date(),
@@ -90,18 +92,20 @@ export class Dashboard implements OnInit {
   }
 
   toggleShowAllRecords() {
-    this.showAllRecords = !this.showAllRecords;
+    this.recordsExpanded = !this.recordsExpanded;
+    this.showAllRecords = this.recordsExpanded;
   }
 
   toggleShowAllSensors() {
-    this.showAllSensors = !this.showAllSensors;
+    this.sensorsExpanded = !this.sensorsExpanded;
+    this.showAllSensors = this.sensorsExpanded;
   }
 
   getDisplayedRecords() {
-    return this.showAllRecords ? this.records : this.records.slice(0, this.recordsLimit);
+    return this.recordsExpanded ? this.records : this.records.slice(0, this.recordsLimit);
   }
 
   getDisplayedSensors() {
-    return this.showAllSensors ? this.iotData : this.iotData.slice(0, this.sensorsLimit);
+    return this.sensorsExpanded ? this.iotData : this.iotData.slice(0, this.sensorsLimit);
   }
 }
