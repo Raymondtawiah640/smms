@@ -32,11 +32,27 @@ export class AddRecord {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  onAmountBlur() {
+    // Generate invoice ID after amount is inputted, regardless of paid status
+    this.generateInvoiceId();
+  }
+
+  generateInvoiceId() {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    this.record.invoice_id = `INV-${timestamp}-${random}`;
+  }
+
   onSubmit() {
     // Basic client-side validation - only full_name is required
     if (!this.record.full_name.trim()) {
       this.submitMessage = 'Full name is required';
       return;
+    }
+
+    // Set QR code to 'None' if empty
+    if (!this.record.qr_code.trim()) {
+      this.record.qr_code = 'None';
     }
 
     this.isSubmitting = true;

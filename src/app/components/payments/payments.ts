@@ -3,7 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 interface Invoice {
-  invoice_id: number;
+  invoice_id: string;
   full_name: string;
   national_id: string;
   date_of_death: string;

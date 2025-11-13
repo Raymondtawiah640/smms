@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 try {
-    $stmt = $pdo->query("SELECT id as invoice_id, full_name, national_id, date_of_death, storage_slot, family_name, family_phone, family_email, amount, paid, created_at FROM mortuary_records WHERE amount > 0 ORDER BY created_at DESC");
+    $stmt = $pdo->query("SELECT invoice_id, full_name, national_id, date_of_death, storage_slot, family_name, family_phone, family_email, amount, paid, created_at FROM mortuary_records WHERE amount > 0 ORDER BY created_at DESC");
     $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode([

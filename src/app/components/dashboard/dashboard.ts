@@ -15,6 +15,10 @@ export class Dashboard implements OnInit {
   records: any[] = [];
   iotData: any[] = [];
   loading = true;
+  showAllRecords = false;
+  showAllSensors = false;
+  recordsLimit = 3;
+  sensorsLimit = 3;
   systemInfo: any = {
     version: 'SMMS v1.0',
     lastBackup: new Date(),
@@ -83,5 +87,21 @@ export class Dashboard implements OnInit {
     if (activeSensors / totalSensors >= 0.8) return 'excellent';
     if (activeSensors / totalSensors >= 0.6) return 'good';
     return 'warning';
+  }
+
+  toggleShowAllRecords() {
+    this.showAllRecords = !this.showAllRecords;
+  }
+
+  toggleShowAllSensors() {
+    this.showAllSensors = !this.showAllSensors;
+  }
+
+  getDisplayedRecords() {
+    return this.showAllRecords ? this.records : this.records.slice(0, this.recordsLimit);
+  }
+
+  getDisplayedSensors() {
+    return this.showAllSensors ? this.iotData : this.iotData.slice(0, this.sensorsLimit);
   }
 }
