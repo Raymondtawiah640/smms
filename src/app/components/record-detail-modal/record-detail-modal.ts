@@ -59,11 +59,11 @@ export class RecordDetailModal {
           this.recordUpdated.emit();
           this.showMessage('Amount updated successfully!', 'success');
         } else {
-          this.showMessage(`Update failed: ${res.message}`, 'error');
+          this.showMessage('Update failed: ' + res.message, 'error');
         }
       },
       error: (err) => {
-        this.showMessage(`Network error (${err.status}). Could not connect to server. Please check your connection and try again.`, 'error');
+        this.showMessage('Network error (' + err.status + '). Could not connect to server. Please check your connection and try again.', 'error');
       }
     });
   }
@@ -104,7 +104,7 @@ export class RecordDetailModal {
             this.showMessage('No changes were made to the paid status.', 'success');
             this.cancelEditingPaidStatus();
           } else {
-            this.showMessage(`Update failed: ${res.message}`, 'error');
+            this.showMessage('Update failed: ' + res.message, 'error');
           }
         }
       },
@@ -113,7 +113,7 @@ export class RecordDetailModal {
           this.showMessage('No changes were made to the paid status.', 'success');
           this.cancelEditingPaidStatus();
         } else {
-          this.showMessage(`Connection error (${err.status}). Please try again.`, 'error');
+          this.showMessage('Connection error (' + err.status + '). Please try again.', 'error');
         }
       }
     });

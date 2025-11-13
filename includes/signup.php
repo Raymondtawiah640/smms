@@ -21,12 +21,25 @@ if (!$input || empty($input['username']) || empty($input['password']) || empty($
 
 $username = trim($input['username']);
 $password = $input['password'];
-$role = $input['role'];
+$role = trim($input['role']);
 
 if (!in_array($role, ['admin', 'staff', 'family'])) {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Invalid role"]);
+    echo json_encode(["success" => false, "message" => "Invalid role. Please select from: admin, staff, or family"]);
     exit;
+}
+
+// Check if this is the first user (no admins exist yet)
+$stmt = $pdo->prepare("SELECT COUNT(*) as admin_count FROM users WHERE role = 'admin'");
+$stmt->execute();
+$adminCount = $stmt->fetch()['admin_count'];
+
+// If this is the first user OR role is not admin, allow direct registration
+// If role is admin and there are existing admins, set as pending_admin for approval
+if ($role === 'admin' && $adminCount > 0) {
+    $actualRole = 'pending_admin';
+} else {
+    $actualRole = $role;
 }
 
 try {
@@ -47,12 +60,16 @@ try {
     $stmt->execute([
         ':username' => $username,
         ':password_hash' => $passwordHash,
-        ':role' => $role
+        ':role' => $actualRole
     ]);
+
+    $message = ($actualRole === 'pending_admin')
+        ? "Admin registration request submitted successfully. Your account is pending approval by an existing admin."
+        : "User registered successfully";
 
     echo json_encode([
         "success" => true,
-        "message" => "User registered successfully"
+        "message" => $message
     ]);
 } catch (PDOException $e) {
     http_response_code(500);

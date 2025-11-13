@@ -18,6 +18,7 @@ export class Signup {
   loading: boolean = false;
   message: string = '';
   passwordVisible: boolean = false;
+  isSuccess: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -26,8 +27,18 @@ export class Signup {
   }
 
   onSubmit() {
-    if (!this.username || !this.password) {
+    if (!this.username || !this.password || !this.role) {
       this.message = 'Please fill in all fields';
+      this.isSuccess = false;
+      return;
+    }
+
+    // Password validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(this.password)) {
+      this.message = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)';
+      this.isSuccess = false;
+      console.log('Password validation failed for:', this.password);
       return;
     }
 
@@ -36,17 +47,20 @@ export class Signup {
       next: (res: any) => {
         this.loading = false;
         if (res.success) {
-          this.message = 'Signup successful! Redirecting to login...';
+          this.isSuccess = true;
+          this.message = res.message || 'Signup successful! Redirecting to login...';
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);
         } else {
+          this.isSuccess = false;
           this.message = res.message;
         }
       },
       error: (err) => {
         this.loading = false;
-        this.message = 'Error during signup: ' + err.error.message;
+        this.isSuccess = false;
+        this.message = 'Error during signup: ' + (err.error?.message || 'Unknown error');
       }
     });
   }

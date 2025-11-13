@@ -38,16 +38,16 @@ export class SensorInput implements OnInit {
       next: (res: any) => {
         this.loading = false;
         if (res.success) {
-          alert(`✅ Reading Added Successfully!\n\n📊 Sensor: ${this.reading.sensor_id}\n🌡️ Temperature: ${this.reading.temperature}°C\n💧 Humidity: ${this.reading.humidity}%\n⚡ Power: ${this.reading.power_status}\n\nData will appear in IoT panel immediately.`);
+          alert('✅ Reading Added Successfully!\n\n📊 Sensor: ' + this.reading.sensor_id + '\n🌡️ Temperature: ' + this.reading.temperature + '°C\n💧 Humidity: ' + this.reading.humidity + '%\n⚡ Power: ' + this.reading.power_status + '\n\nData will appear in IoT panel immediately.');
           this.clearForm();
           this.loadRecentReadings();
         } else {
-          alert(`❌ Error: ${res.message}`);
+          alert('❌ Error: ' + res.message);
         }
       },
       error: (err) => {
         this.loading = false;
-        alert(`❌ Connection Error\n\nCould not save reading.\nPlease check connection and try again.`);
+        alert('❌ Connection Error\n\nCould not save reading.\nPlease check connection and try again.');
       }
     });
   }

@@ -1,0 +1,202 @@
+<div class="min-h-screen bg-gray-100">
+  <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-900">Admin Portal</h1>
+        <p class="mt-1 text-sm text-gray-600">Manage users, monitor activities, and oversee system operations</p>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8 px-6">
+          <button
+            (click)="setActiveTab('approval')"
+            [class.border-blue-500]="activeTab === 'approval'"
+            [class.text-blue-600]="activeTab === 'approval'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+          >
+            Admin Approvals
+          </button>
+          <button
+            (click)="setActiveTab('monitoring')"
+            [class.border-blue-500]="activeTab === 'monitoring'"
+            [class.text-blue-600]="activeTab === 'monitoring'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+          >
+            Login Monitoring
+          </button>
+          <button
+            (click)="setActiveTab('management')"
+            [class.border-blue-500]="activeTab === 'management'"
+            [class.text-blue-600]="activeTab === 'management'"
+            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+          >
+            User Management
+          </button>
+        </nav>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="p-6">
+        <!-- Admin Approval Tab -->
+        <div *ngIf="activeTab === 'approval'" class="space-y-6">
+          <div class="bg-white border border-gray-200 rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Pending Admin Requests</h3>
+
+              <div *ngIf="loading" class="text-center py-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-2 text-sm text-gray-600">Loading...</p>
+              </div>
+
+              <div *ngIf="!loading && pendingAdmins.length === 0" class="text-center py-8">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No pending requests</h3>
+                <p class="mt-1 text-sm text-gray-500">All admin requests have been processed.</p>
+              </div>
+
+              <div *ngIf="!loading && pendingAdmins.length > 0" class="space-y-4">
+                <div *ngFor="let admin of pendingAdmins" class="border border-gray-200 rounded-lg p-4">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h4 class="text-sm font-medium text-gray-900">{{ admin.username }}</h4>
+                      <p class="text-xs text-gray-400">Requested: {{ admin.created_at | date:'medium' }}</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm text-gray-600">Decline</span>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          [checked]="false"
+                          (change)="toggleAdminStatus(admin.id, $event)"
+                          class="sr-only peer"
+                          [attr.aria-label]="'Toggle approval for ' + admin.username"
+                        >
+                        <div class="w-11 h-6 bg-red-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                      </label>
+                      <span class="text-sm text-gray-600">Approve</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Login Monitoring Tab -->
+        <div *ngIf="activeTab === 'monitoring'" class="space-y-6">
+          <div class="bg-white border border-gray-200 rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Client Login Logs</h3>
+
+              <div *ngIf="loading" class="text-center py-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-2 text-sm text-gray-600">Loading...</p>
+              </div>
+
+              <div *ngIf="!loading && loginLogs.length === 0" class="text-center py-8">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No login logs</h3>
+                <p class="mt-1 text-sm text-gray-500">Login activity will appear here.</p>
+              </div>
+
+              <div *ngIf="!loading && loginLogs.length > 0" class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Login Time</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Agent</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngFor="let log of loginLogs">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ log.username }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ log.ip_address }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ log.login_time | date:'medium' }}</td>
+                      <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate" title="{{ log.user_agent }}">{{ log.user_agent }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Management Tab -->
+        <div *ngIf="activeTab === 'management'" class="space-y-6">
+          <div class="bg-white border border-gray-200 rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">User Management</h3>
+
+              <div *ngIf="loading" class="text-center py-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-2 text-sm text-gray-600">Loading...</p>
+              </div>
+
+              <div *ngIf="!loading && users.length === 0" class="text-center py-8">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No users found</h3>
+                <p class="mt-1 text-sm text-gray-500">User data will appear here.</p>
+              </div>
+
+              <div *ngIf="!loading && users.length > 0" class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngFor="let user of users">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ user.username }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                              [class.bg-green-100]="user.role === 'admin'"
+                              [class.text-green-800]="user.role === 'admin'"
+                              [class.bg-blue-100]="user.role === 'client'"
+                              [class.text-blue-800]="user.role === 'client'"
+                              [class.bg-gray-100]="user.role === 'family'"
+                              [class.text-gray-800]="user.role === 'family'">
+                          {{ user.role }}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ user.created_at | date:'short' }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                          <button
+                            *ngIf="user.role === 'admin'"
+                            (click)="revokeAdmin(user.id)"
+                            class="text-yellow-600 hover:text-yellow-900 cursor-pointer"
+                          >
+                            Revoke Admin
+                          </button>
+                          <button
+                            (click)="deleteUser(user.id)"
+                            class="text-red-600 hover:text-red-900 cursor-pointer"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

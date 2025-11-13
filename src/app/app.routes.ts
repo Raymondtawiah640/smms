@@ -9,6 +9,7 @@ import { Payments } from './components/payments/payments';
 import { Signup } from './components/signup/signup';
 import { Login } from './components/login/login';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password';
+import { AdminPortal } from './components/admin-portal/admin-portal';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'sensor-input', component: SensorInput },
   { path: 'family-portal', component: FamilyPortal },
   { path: 'payments', component: Payments },
+  { path: 'admin-portal', component: AdminPortal },
   { path: '**', redirectTo: '/dashboard' }
 ];

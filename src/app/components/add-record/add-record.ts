@@ -40,7 +40,7 @@ export class AddRecord {
   generateInvoiceId() {
     const timestamp = Date.now();
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    this.record.invoice_id = `INV-${timestamp}-${random}`;
+    this.record.invoice_id = 'INV-' + timestamp + '-' + random;
   }
 
   onSubmit() {

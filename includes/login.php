@@ -34,6 +34,25 @@ try {
         exit;
     }
 
+    // Check if user is pending admin approval
+    if ($user['role'] === 'pending_admin') {
+        http_response_code(403);
+        echo json_encode(["success" => false, "message" => "Your admin account is pending approval. Please contact an existing admin."]);
+        exit;
+    }
+
+    // Log the login activity
+    $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+
+    $logStmt = $pdo->prepare("INSERT INTO login_logs (user_id, username, ip_address, user_agent) VALUES (:user_id, :username, :ip_address, :user_agent)");
+    $logStmt->execute([
+        ':user_id' => $user['id'],
+        ':username' => $user['username'],
+        ':ip_address' => $ip_address,
+        ':user_agent' => $user_agent
+    ]);
+
     // Start session and set data
     session_start();
     $_SESSION['user_id'] = $user['id'];

@@ -142,11 +142,11 @@ export class RecordList implements OnInit {
 
           // Show message with actual values
           const changes = [];
-          if (updatedName) changes.push(`Name: ${updatedName}`);
-          if (updatedStatus) changes.push(`Status: ${updatedStatus}`);
+          if (updatedName) changes.push('Name: ' + updatedName);
+          if (updatedStatus) changes.push('Status: ' + updatedStatus);
 
           if (changes.length > 0) {
-            this.showMessage(`Record updated successfully! ${changes.join(', ')}`, 'success');
+            this.showMessage('Record updated successfully! ' + changes.join(', '), 'success');
           } else {
             this.showMessage('Record updated successfully!', 'success');
           }
@@ -155,7 +155,7 @@ export class RecordList implements OnInit {
           if (res.message && res.message.includes('no changes')) {
             this.showMessage('No changes were made to the record.', 'success');
           } else {
-            this.showMessage(`Update failed: ${res.message}`, 'error');
+            this.showMessage('Update failed: ' + res.message, 'error');
           }
         }
       },
@@ -163,7 +163,7 @@ export class RecordList implements OnInit {
         if (err.status === 404 && err.error?.message?.includes('no changes')) {
           this.showMessage('No changes were made to the record.', 'success');
         } else {
-          this.showMessage(`Connection error (${err.status}). Please try again.`, 'error');
+          this.showMessage('Connection error (' + err.status + '). Please try again.', 'error');
         }
       }
     });
