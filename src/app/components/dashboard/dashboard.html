@@ -143,10 +143,10 @@
             </div>
           </div>
           <div *ngIf="records.length > recordsLimit" class="text-center mt-4">
-            <button *ngIf="!recordsExpanded" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <button *ngIf="!recordsExpanded" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium cursor-pointer">
               Show More ({{ records.length - recordsLimit }} more)
             </button>
-            <button *ngIf="recordsExpanded" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            <button *ngIf="recordsExpanded" (click)="toggleShowAllRecords()" class="text-blue-600 hover:text-blue-800 text-sm font-medium cursor-pointer">
               Show Less
             </button>
           </div>
